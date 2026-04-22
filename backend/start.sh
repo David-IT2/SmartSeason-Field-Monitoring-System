@@ -1,2 +1,2 @@
-#!/bin/bash
-php -S 0.0.0.0:${PORT} -t public/
+#!/bin/sh
+exec php -S 0.0.0.0:$PORT -t public/
