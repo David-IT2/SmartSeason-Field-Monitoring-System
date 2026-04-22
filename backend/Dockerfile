@@ -15,4 +15,4 @@ RUN chmod -R a+rw storage bootstrap/cache
 RUN php artisan config:cache
 RUN php artisan route:cache
 
-CMD ["/bin/bash", "/app/start.sh"]
+CMD ["/bin/sh", "-c", "php -S 0.0.0.0:$PORT -t public/"]
