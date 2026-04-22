@@ -7,7 +7,7 @@ export default function AgentFields() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/my-fields').then(r => {
+    api.get('/fields/my').then(r => {
       setFields(r.data)
       setLoading(false)
     })
