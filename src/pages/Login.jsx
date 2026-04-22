@@ -26,7 +26,7 @@ export default function Login() {
 
   const fillDemo = (role) => {
     if (role === 'admin') { setEmail('admin@smartseason.com'); setPassword('password') }
-    else                  { setEmail('jane@smartseason.com');  setPassword('password') }
+    else                  { setEmail('agent@smartseason.com'); setPassword('password') }
   }
 
   return (
