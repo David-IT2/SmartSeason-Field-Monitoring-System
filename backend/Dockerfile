@@ -14,3 +14,4 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs boots
 RUN chmod -R a+rw storage bootstrap/cache
 RUN php artisan config:cache
 RUN php artisan route:cache
+# force rebuild
