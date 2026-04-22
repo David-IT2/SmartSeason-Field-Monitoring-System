@@ -57,6 +57,40 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
+    Route::get('/dashboard/agent', function (Request $request) {
+        $fields = Field::with(['latestUpdate'])
+            ->where('assigned_to', $request->user()->id)
+            ->get();
+        $atRisk         = $fields->filter(fn($f) => $f->days_since_planting > 90 && $f->stage !== 'harvested');
+        $readyToHarvest = $fields->where('stage', 'ready');
+        return response()->json([
+            'total_fields'     => $fields->count(),
+            'status_breakdown' => [
+                'active'    => $fields->where('status', 'active')->count(),
+                'at_risk'   => $atRisk->count(),
+                'completed' => $fields->where('status', 'completed')->count(),
+            ],
+            'stage_breakdown'  => [
+                'planted'   => $fields->where('stage', 'planted')->count(),
+                'growing'   => $fields->where('stage', 'growing')->count(),
+                'ready'     => $fields->where('stage', 'ready')->count(),
+                'harvested' => $fields->where('stage', 'harvested')->count(),
+            ],
+            'needs_attention'  => $atRisk->values()->map(fn($f) => [
+                'id'                  => $f->id,
+                'name'                => $f->name,
+                'crop_type'           => $f->crop_type,
+                'stage'               => $f->stage,
+                'days_since_planting' => $f->days_since_planting,
+            ]),
+            'ready_to_harvest' => $readyToHarvest->values()->map(fn($f) => [
+                'id'        => $f->id,
+                'name'      => $f->name,
+                'crop_type' => $f->crop_type,
+            ]),
+        ]);
+    });
+
     Route::middleware('admin')->group(function () {
         Route::post('/fields', [FieldController::class, 'store']);
         Route::put('/fields/{field}', [FieldController::class, 'update']);
