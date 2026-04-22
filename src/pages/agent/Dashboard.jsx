@@ -9,7 +9,7 @@ export default function AgentDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/dashboard').then(r => {
+    api.get('/dashboard/agent').then(r => {
       setData(r.data)
       setLoading(false)
     })
